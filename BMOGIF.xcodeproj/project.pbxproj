@@ -9,13 +9,18 @@
 /* Begin PBXBuildFile section */
 		0B03446729A4B9C50082588B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03446629A4B9C50082588B /* AppDelegate.swift */; };
 		0B03446929A4B9C50082588B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03446829A4B9C50082588B /* SceneDelegate.swift */; };
-		0B03446B29A4B9C50082588B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03446A29A4B9C50082588B /* ViewController.swift */; };
-		0B03446E29A4B9C50082588B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B03446C29A4B9C50082588B /* Main.storyboard */; };
+		0B03446B29A4B9C50082588B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03446A29A4B9C50082588B /* MainViewController.swift */; };
 		0B03447029A4B9C80082588B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B03446F29A4B9C80082588B /* Assets.xcassets */; };
 		0B03447329A4B9C80082588B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B03447129A4B9C80082588B /* LaunchScreen.storyboard */; };
 		0B03447E29A4B9C80082588B /* BMOGIFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03447D29A4B9C80082588B /* BMOGIFTests.swift */; };
 		0B03448829A4B9C80082588B /* BMOGIFUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03448729A4B9C80082588B /* BMOGIFUITests.swift */; };
 		0B03448A29A4B9C80082588B /* BMOGIFUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03448929A4B9C80082588B /* BMOGIFUITestsLaunchTests.swift */; };
+		0B03449B29A4BDA10082588B /* GIFImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03449A29A4BDA10082588B /* GIFImageView.swift */; };
+		0B03449D29A4BDAC0082588B /* GIFAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03449C29A4BDAC0082588B /* GIFAnimator.swift */; };
+		0B03449F29A4BDB50082588B /* GIFFrameFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03449E29A4BDB50082588B /* GIFFrameFactory.swift */; };
+		0B0344A129A4BDBD0082588B /* GIFFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0344A029A4BDBD0082588B /* GIFFrame.swift */; };
+		0B0344A429A4BE2D0082588B /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0344A329A4BE2D0082588B /* UIImage+GIF.swift */; };
+		0B0344A729A4C9ED0082588B /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0344A629A4C9ED0082588B /* ImageCacheManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +44,7 @@
 		0B03446329A4B9C50082588B /* BMOGIF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BMOGIF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B03446629A4B9C50082588B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0B03446829A4B9C50082588B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		0B03446A29A4B9C50082588B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0B03446D29A4B9C50082588B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0B03446A29A4B9C50082588B /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		0B03446F29A4B9C80082588B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B03447229A4B9C80082588B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0B03447429A4B9C80082588B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +53,12 @@
 		0B03448329A4B9C80082588B /* BMOGIFUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BMOGIFUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B03448729A4B9C80082588B /* BMOGIFUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMOGIFUITests.swift; sourceTree = "<group>"; };
 		0B03448929A4B9C80082588B /* BMOGIFUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BMOGIFUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		0B03449A29A4BDA10082588B /* GIFImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFImageView.swift; sourceTree = "<group>"; };
+		0B03449C29A4BDAC0082588B /* GIFAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFAnimator.swift; sourceTree = "<group>"; };
+		0B03449E29A4BDB50082588B /* GIFFrameFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFFrameFactory.swift; sourceTree = "<group>"; };
+		0B0344A029A4BDBD0082588B /* GIFFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFFrame.swift; sourceTree = "<group>"; };
+		0B0344A329A4BE2D0082588B /* UIImage+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
+		0B0344A629A4C9ED0082588B /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,13 +109,8 @@
 		0B03446529A4B9C50082588B /* BMOGIF */ = {
 			isa = PBXGroup;
 			children = (
-				0B03446629A4B9C50082588B /* AppDelegate.swift */,
-				0B03446829A4B9C50082588B /* SceneDelegate.swift */,
-				0B03446A29A4B9C50082588B /* ViewController.swift */,
-				0B03446C29A4B9C50082588B /* Main.storyboard */,
-				0B03446F29A4B9C80082588B /* Assets.xcassets */,
-				0B03447129A4B9C80082588B /* LaunchScreen.storyboard */,
-				0B03447429A4B9C80082588B /* Info.plist */,
+				0B03449629A4BCB20082588B /* Resource */,
+				0B03449729A4BCE50082588B /* Source */,
 			);
 			path = BMOGIF;
 			sourceTree = "<group>";
@@ -125,6 +130,64 @@
 				0B03448929A4B9C80082588B /* BMOGIFUITestsLaunchTests.swift */,
 			);
 			path = BMOGIFUITests;
+			sourceTree = "<group>";
+		};
+		0B03449629A4BCB20082588B /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				0B03446F29A4B9C80082588B /* Assets.xcassets */,
+				0B03447129A4B9C80082588B /* LaunchScreen.storyboard */,
+				0B03447429A4B9C80082588B /* Info.plist */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		0B03449729A4BCE50082588B /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				0B0344A529A4C9DA0082588B /* Common */,
+				0B0344A229A4BE1D0082588B /* Extensions */,
+				0B03446629A4B9C50082588B /* AppDelegate.swift */,
+				0B03446829A4B9C50082588B /* SceneDelegate.swift */,
+				0B03449929A4BD030082588B /* GIFClasses */,
+				0B03449829A4BCFD0082588B /* View */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		0B03449829A4BCFD0082588B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0B03446A29A4B9C50082588B /* MainViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0B03449929A4BD030082588B /* GIFClasses */ = {
+			isa = PBXGroup;
+			children = (
+				0B0344A029A4BDBD0082588B /* GIFFrame.swift */,
+				0B03449E29A4BDB50082588B /* GIFFrameFactory.swift */,
+				0B03449C29A4BDAC0082588B /* GIFAnimator.swift */,
+				0B03449A29A4BDA10082588B /* GIFImageView.swift */,
+			);
+			path = GIFClasses;
+			sourceTree = "<group>";
+		};
+		0B0344A229A4BE1D0082588B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0B0344A329A4BE2D0082588B /* UIImage+GIF.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		0B0344A529A4C9DA0082588B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				0B0344A629A4C9ED0082588B /* ImageCacheManager.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +296,6 @@
 			files = (
 				0B03447329A4B9C80082588B /* LaunchScreen.storyboard in Resources */,
 				0B03447029A4B9C80082588B /* Assets.xcassets in Resources */,
-				0B03446E29A4B9C50082588B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +320,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B03446B29A4B9C50082588B /* ViewController.swift in Sources */,
+				0B03446B29A4B9C50082588B /* MainViewController.swift in Sources */,
+				0B03449F29A4BDB50082588B /* GIFFrameFactory.swift in Sources */,
+				0B0344A729A4C9ED0082588B /* ImageCacheManager.swift in Sources */,
+				0B03449B29A4BDA10082588B /* GIFImageView.swift in Sources */,
+				0B0344A129A4BDBD0082588B /* GIFFrame.swift in Sources */,
+				0B03449D29A4BDAC0082588B /* GIFAnimator.swift in Sources */,
 				0B03446729A4B9C50082588B /* AppDelegate.swift in Sources */,
+				0B0344A429A4BE2D0082588B /* UIImage+GIF.swift in Sources */,
 				0B03446929A4B9C50082588B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,14 +365,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		0B03446C29A4B9C50082588B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0B03446D29A4B9C50082588B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		0B03447129A4B9C80082588B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -439,10 +499,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DAG6F8V8UR;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BMOGIF/Info.plist;
+				INFOPLIST_FILE = BMOGIF/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -452,9 +511,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dynamic.BMOGIF;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -467,10 +529,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DAG6F8V8UR;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BMOGIF/Info.plist;
+				INFOPLIST_FILE = BMOGIF/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -480,9 +541,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dynamic.BMOGIF;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
