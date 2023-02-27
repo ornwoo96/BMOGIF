@@ -15,12 +15,24 @@ class MainViewController: UIViewController {
         
         return imageView
     }()
+    
+    private var isStopAnimation = false
+    
+    private lazy var stopButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .white
+        button.addTarget(self, action: #selector(stopButtonDidTap), for: .touchUpInside)
+        button.titleLabel?.text = "STOP"
+        button.titleLabel?.textColor = .brown
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupImageData()
         view.backgroundColor = .blue
         setupImageView()
+        setupStopButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,7 +40,7 @@ class MainViewController: UIViewController {
     }
     
     private func setupImageData() {
-        let stringUrl = "https://media2.giphy.com/media/RbDKaczqWovIugyJmW/giphy-preview.gif?cid=ca3b938e91xg4nstx0frpmwk5l29h4ocyqio13kmnt111v3e&rid=giphy-preview.gif&ct=g"
+        let stringUrl = "https://media0.giphy.com/media/xT1XGzXhVgWRLN1Cco/giphy-preview.gif?cid=ca3b938ed8wuc7353a2wq3hwvnf6cacyz824reiz263j031v&rid=giphy-preview.gif&ct=g"
         
         Task {
             let image = try await ImageCacheManager.shared.imageLoad(stringUrl)
@@ -51,6 +63,27 @@ class MainViewController: UIViewController {
             imageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.maxX),
             imageView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.maxX)
         ])
+    }
+    
+    private func setupStopButton() {
+        view.addSubview(stopButton)
+        stopButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stopButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stopButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 30),
+            stopButton.widthAnchor.constraint(equalToConstant: 100),
+            stopButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    @objc private func stopButtonDidTap() {
+        if isStopAnimation {
+            imageView.startAnimation()
+            isStopAnimation = false
+        } else {
+            imageView.stopAnimation()
+            isStopAnimation = true
+        }
     }
 }
 

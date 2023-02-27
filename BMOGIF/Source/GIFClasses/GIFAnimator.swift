@@ -40,12 +40,19 @@ class GIFAnimator {
         self.loopCount = loopCount
         frameFactory?.setupGIFImageFrames(level: level) { [weak self] in
             self?.setupDisplayRunLoop(onReady: animationOnReady)
-            self?.displayLink?.isPaused = false // MARK: 추가된 내용
         }
     }
     
     @objc func updateFrame() {
         guard let frames = frameFactory?.animationFrames else {
+            return
+        }
+        
+        guard let elapsedTime = displayLink?.timestamp else { return }
+        
+        let elapsed = elapsedTime - lastFrameTime
+        
+        guard elapsed >= frames[currentFrameIndex].duration else {
             return
         }
         
@@ -55,13 +62,6 @@ class GIFAnimator {
             currentFrameIndex = 0
             currentLoop += 1
         }
-        
-        guard let elapsedTime = displayLink?.timestamp else { return }
-        
-        let elapsed = elapsedTime - lastFrameTime
-        
-        guard elapsed >= frames[currentFrameIndex].duration else { return }
-        
         
         if loopCount == 0 {
 //            currentFrameIndex = 0
@@ -74,9 +74,8 @@ class GIFAnimator {
         guard let currentImage = frames[currentFrameIndex].image else {
             return
         }
-        
         delegate?.animationImageUpdate(currentImage)
-        
+//        print(displayLink!.timestamp)
         lastFrameTime = displayLink!.timestamp
     }
     

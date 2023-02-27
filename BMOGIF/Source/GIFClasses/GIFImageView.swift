@@ -46,6 +46,10 @@ public class GIFImageView2: UIImageView {
         animator.startAnimating()
     }
     
+    public func stopAnimation() {
+        animator.stopAnimation()
+    }
+    
     public func clearImageView() {
         self.animator.stopAnimation()
         self.image = nil
