@@ -63,9 +63,7 @@ class GIFAnimator {
             currentLoop += 1
         }
         
-        if loopCount == 0 {
-//            currentFrameIndex = 0
-        } else if currentLoop >= loopCount {
+        if currentLoop >= loopCount {
             currentFrameIndex = 0
             startAnimating()
             return
@@ -75,7 +73,7 @@ class GIFAnimator {
             return
         }
         delegate?.animationImageUpdate(currentImage)
-//        print(displayLink!.timestamp)
+        
         lastFrameTime = displayLink!.timestamp
     }
     

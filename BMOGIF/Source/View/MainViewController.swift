@@ -8,7 +8,6 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    
     private lazy var imageView: GIFImageView2 = {
         let imageView = GIFImageView2()
         imageView.backgroundColor = .green
