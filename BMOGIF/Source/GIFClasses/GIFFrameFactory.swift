@@ -18,41 +18,51 @@ public enum GIFFrameReduceLevel {
 }
 
 internal class GIFFrameFactory {
-    var animationFrames: [GIFFrame] = []
-    var imageSource: CGImageSource
-    var imageSize: CGSize
-    var contentMode: UIView.ContentMode
-    var totalFrameCount: Int?
-    var isResizing: Bool = false
+    internal var animationFrames: [GIFFrame] = []
+    private var imageSource: CGImageSource?
+    private var imageSize: CGSize
+    private var contentMode: UIView.ContentMode
+    internal var totalFrameCount: Int?
+    private var isResizing: Bool = false
+    private var isCached: Bool = false
+    private var cacheKey: String = ""
     
     init(data: Data,
          size: CGSize,
          contentMode: UIView.ContentMode = .scaleAspectFill,
-         isResizing: Bool = false) {
+         isResizing: Bool = false,
+         cacheKey: String) {
+        self.cacheKey = cacheKey
         let options = [String(kCGImageSourceShouldCache): kCFBooleanFalse] as CFDictionary
         self.imageSource = CGImageSourceCreateWithData(data as CFData, options) ?? CGImageSourceCreateIncremental(options)
         self.imageSize = size
         self.contentMode = contentMode
-        self.animationFrames = convertCGImageSourceToGIFFrameArray(source: self.imageSource)
         self.isResizing = isResizing
     }
     
     internal func clearFactory() {
         self.animationFrames = []
-        self.imageSource = UIImage().cgImage as! CGImageSource
+        self.imageSource = nil
         self.totalFrameCount = 0
         self.isResizing = false
     }
     
     internal func setupGIFImageFrames(level: GIFFrameReduceLevel,
                                       animationOnReady: (() -> Void)? = nil) {
+        guard let imageSource = self.imageSource else {
+            return
+        }
+        
         if isResizing {
             let resizedFrames = resize(size: self.imageSize)
             let convertFramesArray = convertCGImageSourceToGIFFrameArray(source: resizedFrames)
             self.animationFrames = getLevelFrame(level: level, frames: convertFramesArray)
+            
             animationOnReady?()
         } else {
-            self.animationFrames = getLevelFrame(level: level, frames: self.animationFrames)
+            let frames = convertCGImageSourceToGIFFrameArray(source: imageSource)
+            self.animationFrames = getLevelFrame(level: level, frames: frames)
+            
             animationOnReady?()
         }
     }
@@ -61,7 +71,7 @@ internal class GIFFrameFactory {
                                frames: [GIFFrame]) -> [GIFFrame] {
         switch level {
         case .highLevel:
-            return self.animationFrames
+            return frames
         case .middleLevel:
             return reduceFrames(GIFFrames: frames, level: 2)
         case .lowLevel:
@@ -82,8 +92,16 @@ internal class GIFFrameFactory {
                 return []
             }
             
-            frameProperties.append(GIFFrame(image: image, duration: applyMinimumDelayTime(properties)))
+            frameProperties.append(
+                GIFFrame(image: image,
+                         duration: applyMinimumDelayTime(properties))
+            )
         }
+        
+        GIFImageCache.shared.addGIFImages(frameProperties,
+                                          forKey: self.cacheKey)
+        
+        isCached = true
         
         return frameProperties
     }
@@ -125,6 +143,10 @@ internal class GIFFrameFactory {
     }
     
     private func resize(size: CGSize) -> CGImageSource {
+        guard let imageSource = self.imageSource else {
+            return UIImage().cgImage as! CGImageSource
+        }
+        
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceCreateThumbnailFromImageAlways: true,

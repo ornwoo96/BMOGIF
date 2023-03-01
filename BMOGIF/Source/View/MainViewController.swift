@@ -8,8 +8,8 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    private lazy var imageView: GIFImageView2 = {
-        let imageView = GIFImageView2()
+    private lazy var imageView: BMOGIFImageView = {
+        let imageView = BMOGIFImageView()
         imageView.backgroundColor = .green
         
         return imageView
@@ -46,7 +46,10 @@ class MainViewController: UIViewController {
             
             self.imageView.setupGIFImage(data: image,
                                          size: CGSize(width: 100, height: 100),
-                                         contentMode: UIView.ContentMode.scaleAspectFill) {
+                                         loopCount: 0,
+                                         contentMode: UIView.ContentMode.scaleAspectFill,
+                                         level: .lowLevel,
+                                         cacheKey: stringUrl) {
                 self.imageView.startAnimating()
                 self.imageView.startAnimation()
             }
@@ -81,6 +84,7 @@ class MainViewController: UIViewController {
             isStopAnimation = false
         } else {
             imageView.stopAnimation()
+            imageView.clearImageView()
             isStopAnimation = true
         }
     }

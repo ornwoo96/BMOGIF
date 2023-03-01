@@ -8,11 +8,11 @@
 import UIKit
 import ImageIO
 
-protocol GIFAnimatorImageUpdateDelegate {
+internal protocol GIFAnimatorImageUpdateDelegate {
     func animationImageUpdate(_ image: CGImage)
 }
 
-class GIFAnimator {
+internal class GIFAnimator {
     private var currentFrameIndex = 0
     private var currentFrameStartTime: Double = 0.0
     private var lastFrameTime: Double = 0.0
@@ -23,32 +23,36 @@ class GIFAnimator {
     internal var delegate: GIFAnimatorImageUpdateDelegate?
     private var frameFactory: GIFFrameFactory?
     
-    func setupForAnimation(data: Data,
-                           size: CGSize,
-                           loopCount: Int = 0,
-                           contentMode: UIView.ContentMode,
-                           level: GIFFrameReduceLevel,
-                           isResizing: Bool,
-                           animationOnReady: (() -> Void)? = nil) {
+    internal func setupForAnimation(data: Data,
+                                    size: CGSize,
+                                    loopCount: Int = 0,
+                                    contentMode: UIView.ContentMode,
+                                    level: GIFFrameReduceLevel,
+                                    isResizing: Bool,
+                                    cacheKey: String,
+                                    animationOnReady: (() -> Void)? = nil) {
         displayLink = CADisplayLink(target: self, selector: #selector(updateFrame))
         displayLink!.add(to: .current, forMode: .common)
         frameFactory = nil
         frameFactory = GIFFrameFactory(data: data,
                                        size: size,
                                        contentMode: contentMode,
-                                       isResizing: isResizing)
+                                       isResizing: isResizing,
+                                       cacheKey: cacheKey)
         self.loopCount = loopCount
         frameFactory?.setupGIFImageFrames(level: level) { [weak self] in
             self?.setupDisplayRunLoop(onReady: animationOnReady)
         }
     }
     
-    @objc func updateFrame() {
+    @objc private func updateFrame() {
         guard let frames = frameFactory?.animationFrames else {
             return
         }
         
-        guard let elapsedTime = displayLink?.timestamp else { return }
+        guard let elapsedTime = displayLink?.timestamp else {
+            return
+        }
         
         let elapsed = elapsedTime - lastFrameTime
         
@@ -63,15 +67,16 @@ class GIFAnimator {
             currentLoop += 1
         }
         
-        if currentLoop >= loopCount {
+        if loopCount != 0 && currentLoop >= loopCount {
             currentFrameIndex = 0
-            startAnimating()
+            stopAnimation()
             return
         }
         
         guard let currentImage = frames[currentFrameIndex].image else {
             return
         }
+        
         delegate?.animationImageUpdate(currentImage)
         
         lastFrameTime = displayLink!.timestamp
@@ -88,9 +93,10 @@ class GIFAnimator {
     
     internal func clear() {
         displayLink!.invalidate()
+        frameFactory?.clearFactory()
     }
     
-    func stopAnimation() {
+    internal func stopAnimation() {
         displayLink!.isPaused = true
     }
     

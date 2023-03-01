@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct GIFFrame {
+internal struct GIFFrame {
     static let empty: Self = .init(image: UIImage().cgImage,
                                    duration: 0.0)
     

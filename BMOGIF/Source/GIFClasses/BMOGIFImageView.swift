@@ -7,10 +7,7 @@
 
 import UIKit
 
-// MARK: setup image data
-// MARK: 캐싱 작업
-
-public class GIFImageView2: UIImageView {
+public class BMOGIFImageView: UIImageView {
     private var animator = GIFAnimator()
     
     // Setup - GIF URL
@@ -25,11 +22,12 @@ public class GIFImageView2: UIImageView {
     
     // Setup - GIF Data
     public func setupGIFImage(data: Data,
-                              size: CGSize,
+                              size: CGSize = CGSize(),
                               loopCount: Int = 0,
-                              contentMode: UIView.ContentMode,
+                              contentMode: UIView.ContentMode = .scaleAspectFill,
                               level: GIFFrameReduceLevel = .highLevel,
                               isResizing: Bool = false,
+                              cacheKey: String,
                               animationOnReady: (() -> Void)? = nil) {
         animator.delegate = self
         animator.setupForAnimation(data: data,
@@ -38,8 +36,8 @@ public class GIFImageView2: UIImageView {
                                    contentMode: contentMode,
                                    level: level,
                                    isResizing: isResizing,
+                                   cacheKey: cacheKey,
                                    animationOnReady: animationOnReady)
-        
     }
     
     public func startAnimation() {
@@ -57,11 +55,12 @@ public class GIFImageView2: UIImageView {
     }
     
     private func setupImage(image: UIImage) {
+        // MARK: 메인 스레드가 아닌 곳에서 이미지를 업데이트 해도 되나요?
         
     }
 }
 
-extension GIFImageView2: GIFAnimatorImageUpdateDelegate {
+extension BMOGIFImageView: GIFAnimatorImageUpdateDelegate {
     func animationImageUpdate(_ image: CGImage) {
         DispatchQueue.main.async { [weak self] in
             self?.image = UIImage(cgImage: image)
