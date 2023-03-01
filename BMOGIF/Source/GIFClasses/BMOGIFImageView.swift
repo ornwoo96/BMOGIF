@@ -55,7 +55,6 @@ public class BMOGIFImageView: UIImageView {
     }
     
     private func setupImage(image: UIImage) {
-        // MARK: 메인 스레드가 아닌 곳에서 이미지를 업데이트 해도 되나요?
         
     }
 }
