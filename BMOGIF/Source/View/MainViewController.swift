@@ -45,12 +45,11 @@ class MainViewController: UIViewController {
             let image = try await ImageCacheManager.shared.imageLoad(stringUrl)
             
             self.imageView.setupGIFImage(data: image,
+                                         cacheKey: stringUrl,
                                          size: CGSize(width: 100, height: 100),
                                          loopCount: 0,
                                          contentMode: UIView.ContentMode.scaleAspectFill,
-                                         level: .lowLevel,
-                                         cacheKey: stringUrl) {
-                self.imageView.startAnimating()
+                                         level: .lowLevel) {
                 self.imageView.startAnimation()
             }
         }

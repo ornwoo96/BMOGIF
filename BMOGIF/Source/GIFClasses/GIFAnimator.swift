@@ -19,13 +19,12 @@ internal class GIFAnimator {
     private var loopCount: Int = 0
     private var currentLoop: Int = 0
     private var displayLink: CADisplayLink?
-    
     internal var delegate: GIFAnimatorImageUpdateDelegate?
     private var frameFactory: GIFFrameFactory?
     
     internal func setupForAnimation(data: Data,
                                     size: CGSize,
-                                    loopCount: Int = 0,
+                                    loopCount: Int,
                                     contentMode: UIView.ContentMode,
                                     level: GIFFrameReduceLevel,
                                     isResizing: Bool,
@@ -87,7 +86,7 @@ internal class GIFAnimator {
         onReady?()
     }
     
-    internal func startAnimating() {
+    internal func startAnimation() {
         displayLink!.isPaused = false
     }
     
@@ -100,5 +99,8 @@ internal class GIFAnimator {
         displayLink!.isPaused = true
     }
     
-    
+    internal func checkCachingStatus() -> Bool {
+        guard let bool = frameFactory?.isCached else { return false }
+        return bool
+    }
 }

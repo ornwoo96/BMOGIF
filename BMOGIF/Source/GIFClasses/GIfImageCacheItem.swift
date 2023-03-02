@@ -9,10 +9,8 @@ import UIKit
 
 internal class GIFImageCacheItem {
     let images: [GIFFrame]
-    let metadata: [String: Any]
 
-    init(images: [GIFFrame], metadata: [String: Any] = [:]) {
+    init(images: [GIFFrame]) {
         self.images = images
-        self.metadata = metadata
     }
 }

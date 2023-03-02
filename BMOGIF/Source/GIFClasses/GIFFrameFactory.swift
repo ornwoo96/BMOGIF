@@ -24,7 +24,7 @@ internal class GIFFrameFactory {
     private var contentMode: UIView.ContentMode
     internal var totalFrameCount: Int?
     private var isResizing: Bool = false
-    private var isCached: Bool = false
+    internal var isCached: Bool = false
     private var cacheKey: String = ""
     
     init(data: Data,
@@ -55,12 +55,14 @@ internal class GIFFrameFactory {
         
         if isResizing {
             let resizedFrames = resize(size: self.imageSize)
-            let convertFramesArray = convertCGImageSourceToGIFFrameArray(source: resizedFrames)
+            let convertFramesArray = getCGImagesForKeyWithCaching(key: self.cacheKey,
+                                                                  source: resizedFrames)
             self.animationFrames = getLevelFrame(level: level, frames: convertFramesArray)
             
             animationOnReady?()
         } else {
-            let frames = convertCGImageSourceToGIFFrameArray(source: imageSource)
+            let frames = getCGImagesForKeyWithCaching(key: self.cacheKey,
+                                                      source: imageSource)
             self.animationFrames = getLevelFrame(level: level, frames: frames)
             
             animationOnReady?()
@@ -76,6 +78,19 @@ internal class GIFFrameFactory {
             return reduceFrames(GIFFrames: frames, level: 2)
         case .lowLevel:
             return reduceFrames(GIFFrames: frames, level: 3)
+        }
+    }
+    
+    private func getCGImagesForKeyWithCaching(key: String,
+                                              source: CGImageSource) -> [GIFFrame] {
+        if isCached {
+            guard let cgImages = GIFImageCache.shared.getGIFImages(forKey: key) else {
+                return []
+            }
+            
+            return cgImages
+        } else {
+            return convertCGImageSourceToGIFFrameArray(source: source)
         }
     }
     

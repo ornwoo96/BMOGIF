@@ -11,23 +11,60 @@ public class BMOGIFImageView: UIImageView {
     private var animator = GIFAnimator()
     
     // Setup - GIF URL
-    public func setupGIFImage(URL: URL,
+    public func setupGIFImage(url: String,
+                              cacheKey: String,
+                              size: CGSize,
+                              loopCount: Int = 0,
+                              contentMode: UIView.ContentMode = .scaleAspectFill,
+                              level: GIFFrameReduceLevel = .highLevel,
+                              isResizing: Bool = false,
+                              animationOnReady: (() -> Void)? = nil) {
+        guard let url = URL(string: url) else { return }
+        animator.delegate = self
+        GIFDownloader.downloadGIF(from: url) { [weak self] gifData in
+            guard let data = gifData else { return }
+            self?.animator.setupForAnimation(data: data,
+                                             size: size,
+                                             loopCount: loopCount,
+                                             contentMode: contentMode,
+                                             level: level,
+                                             isResizing: isResizing,
+                                             cacheKey: cacheKey,
+                                             animationOnReady: animationOnReady)
+        }
+    }
+    
+    // Setup - GIF Name
+    public func setupGIFImage(name: String,
+                              cacheKey: String,
                               size: CGSize,
                               loopCount: Int = 0,
                               contentMode: UIView.ContentMode,
                               level: GIFFrameReduceLevel = .highLevel,
-                              isResizing: Bool = false) {
-        
+                              isResizing: Bool = false,
+                              animationOnReady: (() -> Void)? = nil) {
+        animator.delegate = self
+        GIFDownloader.getGIFData(named: name) { [weak self] gifData in
+            guard let data = gifData else { return }
+            self?.animator.setupForAnimation(data: data,
+                                             size: size,
+                                             loopCount: loopCount,
+                                             contentMode: contentMode,
+                                             level: level,
+                                             isResizing: isResizing,
+                                             cacheKey: cacheKey,
+                                             animationOnReady: animationOnReady)
+        }
     }
     
     // Setup - GIF Data
     public func setupGIFImage(data: Data,
+                              cacheKey: String,
                               size: CGSize = CGSize(),
                               loopCount: Int = 0,
                               contentMode: UIView.ContentMode = .scaleAspectFill,
                               level: GIFFrameReduceLevel = .highLevel,
                               isResizing: Bool = false,
-                              cacheKey: String,
                               animationOnReady: (() -> Void)? = nil) {
         animator.delegate = self
         animator.setupForAnimation(data: data,
@@ -41,7 +78,7 @@ public class BMOGIFImageView: UIImageView {
     }
     
     public func startAnimation() {
-        animator.startAnimating()
+        animator.startAnimation()
     }
     
     public func stopAnimation() {
