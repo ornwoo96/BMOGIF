@@ -13,37 +13,52 @@ public class BMOGIFImageView: UIImageView {
     // Setup - GIF URL
     public func setupGIFImage(url: String,
                               cacheKey: String,
-                              size: CGSize,
+                              size: CGSize = CGSize(),
                               loopCount: Int = 0,
                               contentMode: UIView.ContentMode = .scaleAspectFill,
                               level: GIFFrameReduceLevel = .highLevel,
                               isResizing: Bool = false,
                               animationOnReady: (() -> Void)? = nil) {
-        guard let url = URL(string: url) else { return }
         animator.delegate = self
-        GIFDownloader.downloadGIF(from: url) { [weak self] gifData in
-            guard let data = gifData else { return }
-            self?.animator.setupForAnimation(data: data,
-                                             size: size,
-                                             loopCount: loopCount,
-                                             contentMode: contentMode,
-                                             level: level,
-                                             isResizing: isResizing,
-                                             cacheKey: cacheKey,
-                                             animationOnReady: animationOnReady)
+        
+        if animator.checkCachingStatus() {
+            animator.setupCachedImages(animationOnReady: animationOnReady)
+            return
+        }
+        
+        GIFDownloader.fetchImageData(from: url) { result in
+            switch result {
+            case .success(let image):
+                self.animator.setupForAnimation(data: image,
+                                                size: size,
+                                                loopCount: loopCount,
+                                                contentMode: contentMode,
+                                                level: level,
+                                                isResizing: isResizing,
+                                                cacheKey: cacheKey,
+                                                animationOnReady: animationOnReady)
+            case .failure(let failure):
+                print("Error retrieving image data: \(failure.localizedDescription)")
+            }
         }
     }
     
     // Setup - GIF Name
     public func setupGIFImage(name: String,
                               cacheKey: String,
-                              size: CGSize,
+                              size: CGSize = CGSize(),
                               loopCount: Int = 0,
-                              contentMode: UIView.ContentMode,
+                              contentMode: UIView.ContentMode = .scaleAspectFill,
                               level: GIFFrameReduceLevel = .highLevel,
                               isResizing: Bool = false,
                               animationOnReady: (() -> Void)? = nil) {
         animator.delegate = self
+        
+        if animator.checkCachingStatus() {
+            animator.setupCachedImages(animationOnReady: animationOnReady)
+            return
+        }
+        
         GIFDownloader.getGIFData(named: name) { [weak self] gifData in
             guard let data = gifData else { return }
             self?.animator.setupForAnimation(data: data,
@@ -67,6 +82,12 @@ public class BMOGIFImageView: UIImageView {
                               isResizing: Bool = false,
                               animationOnReady: (() -> Void)? = nil) {
         animator.delegate = self
+        
+        if animator.checkCachingStatus() {
+            animator.setupCachedImages(animationOnReady: animationOnReady)
+            return
+        }
+        
         animator.setupForAnimation(data: data,
                                    size: size,
                                    loopCount: loopCount,
@@ -86,13 +107,11 @@ public class BMOGIFImageView: UIImageView {
     }
     
     public func clearImageView() {
-        self.animator.stopAnimation()
-        self.image = nil
-        self.animator.clear()
-    }
-    
-    private func setupImage(image: UIImage) {
-        
+        animator.stopAnimation()
+        DispatchQueue.main.async { [weak self] in
+            self?.image = nil
+        }
+        animator.clear()
     }
 }
 

@@ -40,6 +40,10 @@ internal class GIFFrameFactory {
         self.isResizing = isResizing
     }
     
+    internal func setupCachedImages() {
+        
+    }
+    
     internal func clearFactory() {
         self.animationFrames = []
         self.imageSource = nil
@@ -47,7 +51,7 @@ internal class GIFFrameFactory {
         self.isResizing = false
     }
     
-    internal func setupGIFImageFrames(level: GIFFrameReduceLevel,
+    internal func setupGIFImageFrames(level: GIFFrameReduceLevel = .highLevel,
                                       animationOnReady: (() -> Void)? = nil) {
         guard let imageSource = self.imageSource else {
             return

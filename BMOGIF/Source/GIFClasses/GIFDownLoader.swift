@@ -7,25 +7,55 @@
 
 import UIKit
 
-class GIFDownloader {
-    static func downloadGIF(from url: URL,
-                            completion: @escaping (Data?) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
+enum NetworkError: Error {
+    case invalidResponse
+    case noData
+}
+
+internal class GIFDownloader {
+    static func fetchImageData(_ url: String) async throws -> Data {
+        guard let stringToURL = URL(string: url) else {
+            return Data()
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: stringToURL)
+        
+        guard let response = response as? HTTPURLResponse,
+              response.statusCode == 200 else {
+            return Data()
+        }
+        
+        return data
+    }
+    
+    static func fetchImageData(from url: String,
+                               completion: @escaping (Result<Data, Error>) -> Void) {
+        guard let stringToURL = URL(string: url) else {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: stringToURL) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
             guard let data = data else {
-                completion(nil)
+                completion(.failure(NetworkError.noData))
                 return
             }
             
-            if response?.mimeType == "image/gif" {
-                completion(data)
-            } else {
-                completion(nil)
-            }
-        }.resume()
+            completion(.success(data))
+        }
+        task.resume()
     }
     
     static func getGIFData(named name: String,
-                           completion: @escaping (Data?) -> Void) {
+                    completion: @escaping (Data?) -> Void) {
         guard let path = Bundle.main.path(forResource: name, ofType: "gif") else {
             completion(nil)
             return

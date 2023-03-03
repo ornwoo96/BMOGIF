@@ -14,7 +14,6 @@ internal protocol GIFAnimatorImageUpdateDelegate {
 
 internal class GIFAnimator {
     private var currentFrameIndex = 0
-    private var currentFrameStartTime: Double = 0.0
     private var lastFrameTime: Double = 0.0
     private var loopCount: Int = 0
     private var currentLoop: Int = 0
@@ -30,8 +29,9 @@ internal class GIFAnimator {
                                     isResizing: Bool,
                                     cacheKey: String,
                                     animationOnReady: (() -> Void)? = nil) {
-        displayLink = CADisplayLink(target: self, selector: #selector(updateFrame))
-        displayLink!.add(to: .current, forMode: .common)
+        let gifDisplay = CADisplayLink(target: self, selector: #selector(updateFrame))
+        gifDisplay.add(to: .current, forMode: .common)
+        displayLink = gifDisplay
         frameFactory = nil
         frameFactory = GIFFrameFactory(data: data,
                                        size: size,
@@ -39,9 +39,11 @@ internal class GIFAnimator {
                                        isResizing: isResizing,
                                        cacheKey: cacheKey)
         self.loopCount = loopCount
-        frameFactory?.setupGIFImageFrames(level: level) { [weak self] in
-            self?.setupDisplayRunLoop(onReady: animationOnReady)
-        }
+        frameFactory?.setupGIFImageFrames(level: level, animationOnReady: animationOnReady)
+    }
+    
+    internal func setupCachedImages(animationOnReady: (() -> Void)? = nil) {
+        frameFactory?.setupGIFImageFrames(animationOnReady: animationOnReady)
     }
     
     @objc private func updateFrame() {
@@ -78,25 +80,40 @@ internal class GIFAnimator {
         
         delegate?.animationImageUpdate(currentImage)
         
-        lastFrameTime = displayLink!.timestamp
-    }
-    
-    private func setupDisplayRunLoop(onReady: (() -> Void)? = nil) {
-        displayLink!.add(to: .current, forMode: .common)
-        onReady?()
+        guard let displayLinkLastFrameTime = displayLink?.timestamp else {
+            return
+        }
+        
+        lastFrameTime = displayLinkLastFrameTime
     }
     
     internal func startAnimation() {
-        displayLink!.isPaused = false
+        guard let displayLink = displayLink else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            displayLink.isPaused = false
+        }
     }
     
     internal func clear() {
-        displayLink!.invalidate()
-        frameFactory?.clearFactory()
+        guard let displayLink = displayLink else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            displayLink.invalidate()
+            self?.frameFactory?.clearFactory()
+        }
     }
     
     internal func stopAnimation() {
-        displayLink!.isPaused = true
+        guard let displayLink = displayLink else {
+            return
+        }
+        DispatchQueue.main.async {
+            displayLink.isPaused = true
+        }
     }
     
     internal func checkCachingStatus() -> Bool {

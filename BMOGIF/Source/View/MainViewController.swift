@@ -41,18 +41,19 @@ class MainViewController: UIViewController {
     private func setupImageData() {
         let stringUrl = "https://media0.giphy.com/media/xT1XGzXhVgWRLN1Cco/giphy-preview.gif?cid=ca3b938ed8wuc7353a2wq3hwvnf6cacyz824reiz263j031v&rid=giphy-preview.gif&ct=g"
         
-        Task {
-            let image = try await ImageCacheManager.shared.imageLoad(stringUrl)
-            
-            self.imageView.setupGIFImage(data: image,
+//        Task {
+//            let image = try await ImageCacheManager.shared.imageLoad(stringUrl)
+//
+            self.imageView.setupGIFImage(url: stringUrl,
                                          cacheKey: stringUrl,
                                          size: CGSize(width: 100, height: 100),
-                                         loopCount: 0,
+                                         loopCount: 3,
                                          contentMode: UIView.ContentMode.scaleAspectFill,
                                          level: .lowLevel) {
+                
                 self.imageView.startAnimation()
             }
-        }
+//        }
     }
     
     private func setupImageView() {

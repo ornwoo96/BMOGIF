@@ -19,8 +19,6 @@
 		0B03449D29A4BDAC0082588B /* GIFAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03449C29A4BDAC0082588B /* GIFAnimator.swift */; };
 		0B03449F29A4BDB50082588B /* GIFFrameFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B03449E29A4BDB50082588B /* GIFFrameFactory.swift */; };
 		0B0344A129A4BDBD0082588B /* GIFFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0344A029A4BDBD0082588B /* GIFFrame.swift */; };
-		0B0344A429A4BE2D0082588B /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0344A329A4BE2D0082588B /* UIImage+GIF.swift */; };
-		0B0344A729A4C9ED0082588B /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0344A629A4C9ED0082588B /* ImageCacheManager.swift */; };
 		0BE7766529AE10FB004FFB75 /* GIFImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7766429AE10FB004FFB75 /* GIFImageCache.swift */; };
 		0BE7766729AE12C4004FFB75 /* GIfImageCacheItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7766629AE12C4004FFB75 /* GIfImageCacheItem.swift */; };
 		0BE7766929B0B9A8004FFB75 /* GIFDownLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7766829B0B9A8004FFB75 /* GIFDownLoader.swift */; };
@@ -60,8 +58,6 @@
 		0B03449C29A4BDAC0082588B /* GIFAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFAnimator.swift; sourceTree = "<group>"; };
 		0B03449E29A4BDB50082588B /* GIFFrameFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFFrameFactory.swift; sourceTree = "<group>"; };
 		0B0344A029A4BDBD0082588B /* GIFFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFFrame.swift; sourceTree = "<group>"; };
-		0B0344A329A4BE2D0082588B /* UIImage+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
-		0B0344A629A4C9ED0082588B /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
 		0BE7766429AE10FB004FFB75 /* GIFImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFImageCache.swift; sourceTree = "<group>"; };
 		0BE7766629AE12C4004FFB75 /* GIfImageCacheItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIfImageCacheItem.swift; sourceTree = "<group>"; };
 		0BE7766829B0B9A8004FFB75 /* GIFDownLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFDownLoader.swift; sourceTree = "<group>"; };
@@ -151,8 +147,6 @@
 		0B03449729A4BCE50082588B /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				0B0344A529A4C9DA0082588B /* Common */,
-				0B0344A229A4BE1D0082588B /* Extensions */,
 				0B03446629A4B9C50082588B /* AppDelegate.swift */,
 				0B03446829A4B9C50082588B /* SceneDelegate.swift */,
 				0B03449929A4BD030082588B /* GIFClasses */,
@@ -181,22 +175,6 @@
 				0BE7766829B0B9A8004FFB75 /* GIFDownLoader.swift */,
 			);
 			path = GIFClasses;
-			sourceTree = "<group>";
-		};
-		0B0344A229A4BE1D0082588B /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				0B0344A329A4BE2D0082588B /* UIImage+GIF.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		0B0344A529A4C9DA0082588B /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				0B0344A629A4C9ED0082588B /* ImageCacheManager.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,7 +309,6 @@
 			files = (
 				0B03446B29A4B9C50082588B /* MainViewController.swift in Sources */,
 				0B03449F29A4BDB50082588B /* GIFFrameFactory.swift in Sources */,
-				0B0344A729A4C9ED0082588B /* ImageCacheManager.swift in Sources */,
 				0B03449B29A4BDA10082588B /* BMOGIFImageView.swift in Sources */,
 				0B0344A129A4BDBD0082588B /* GIFFrame.swift in Sources */,
 				0BE7766529AE10FB004FFB75 /* GIFImageCache.swift in Sources */,
@@ -339,7 +316,6 @@
 				0BE7766929B0B9A8004FFB75 /* GIFDownLoader.swift in Sources */,
 				0BE7766729AE12C4004FFB75 /* GIfImageCacheItem.swift in Sources */,
 				0B03446729A4B9C50082588B /* AppDelegate.swift in Sources */,
-				0B0344A429A4BE2D0082588B /* UIImage+GIF.swift in Sources */,
 				0B03446929A4B9C50082588B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
