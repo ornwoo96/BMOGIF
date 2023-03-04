@@ -41,19 +41,16 @@ class MainViewController: UIViewController {
     private func setupImageData() {
         let stringUrl = "https://media0.giphy.com/media/xT1XGzXhVgWRLN1Cco/giphy-preview.gif?cid=ca3b938ed8wuc7353a2wq3hwvnf6cacyz824reiz263j031v&rid=giphy-preview.gif&ct=g"
         
-//        Task {
-//            let image = try await ImageCacheManager.shared.imageLoad(stringUrl)
-//
-            self.imageView.setupGIFImage(url: stringUrl,
-                                         cacheKey: stringUrl,
-                                         size: CGSize(width: 100, height: 100),
-                                         loopCount: 3,
-                                         contentMode: UIView.ContentMode.scaleAspectFill,
-                                         level: .lowLevel) {
-                
-                self.imageView.startAnimation()
-            }
-//        }
+        self.imageView.setupGIFImage(name: "cats",
+                                     cacheKey: stringUrl,
+                                     size: CGSize(width: 100, height: 100),
+                                     loopCount: 0,
+                                     contentMode: UIView.ContentMode.scaleAspectFill,
+                                     level: .highLevel,
+                                     isResizing: true) {
+            
+            self.imageView.startAnimation()
+        }
     }
     
     private func setupImageView() {
@@ -84,7 +81,6 @@ class MainViewController: UIViewController {
             isStopAnimation = false
         } else {
             imageView.stopAnimation()
-            imageView.clearImageView()
             isStopAnimation = true
         }
     }

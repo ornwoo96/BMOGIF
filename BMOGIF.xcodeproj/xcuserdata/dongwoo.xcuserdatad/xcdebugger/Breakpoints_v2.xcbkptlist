@@ -7,32 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4AD3298A-1868-4FA9-AEB2-64884795B98B"
+            uuid = "7263BA4E-F6CC-45EC-96F8-A3966809899B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BMOGIF/Source/GIFClasses/GIFFrameFactory.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "getCGImagesForKeyWithCaching(key:source:)"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "resize(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "E3DF935B-E6F2-4BC9-A737-F272579AD7DD"
+            uuid = "2CDA4056-4FB8-496B-8358-77364F85456C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BMOGIF/Source/GIFClasses/GIFAnimator.swift"
+            filePath = "BMOGIF/Source/GIFClasses/GIFFrameFactory.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "startAnimation()"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "resize(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CF92DFA0-A8CB-4D2E-A90A-F793D44D4563"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BMOGIF/Source/GIFClasses/GIFFrameFactory.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "resize(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

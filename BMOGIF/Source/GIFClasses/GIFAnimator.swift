@@ -47,6 +47,7 @@ internal class GIFAnimator {
     }
     
     @objc private func updateFrame() {
+        
         guard let frames = frameFactory?.animationFrames else {
             return
         }
@@ -95,6 +96,7 @@ internal class GIFAnimator {
         DispatchQueue.main.async {
             displayLink.isPaused = false
         }
+        
     }
     
     internal func clear() {
@@ -111,6 +113,7 @@ internal class GIFAnimator {
         guard let displayLink = displayLink else {
             return
         }
+        
         DispatchQueue.main.async {
             displayLink.isPaused = true
         }

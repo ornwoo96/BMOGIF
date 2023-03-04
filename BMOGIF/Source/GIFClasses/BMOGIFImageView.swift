@@ -26,20 +26,17 @@ public class BMOGIFImageView: UIImageView {
             return
         }
         
-        GIFDownloader.fetchImageData(from: url) { result in
-            switch result {
-            case .success(let image):
-                self.animator.setupForAnimation(data: image,
-                                                size: size,
-                                                loopCount: loopCount,
-                                                contentMode: contentMode,
-                                                level: level,
-                                                isResizing: isResizing,
-                                                cacheKey: cacheKey,
-                                                animationOnReady: animationOnReady)
-            case .failure(let failure):
-                print("Error retrieving image data: \(failure.localizedDescription)")
-            }
+        Task {
+            let image = try await GIFDownloader.fetchImageData(url)
+
+            self.animator.setupForAnimation(data: image,
+                                            size: size,
+                                            loopCount: loopCount,
+                                            contentMode: contentMode,
+                                            level: level,
+                                            isResizing: isResizing,
+                                            cacheKey: cacheKey,
+                                            animationOnReady: animationOnReady)
         }
     }
     
@@ -58,17 +55,21 @@ public class BMOGIFImageView: UIImageView {
             animator.setupCachedImages(animationOnReady: animationOnReady)
             return
         }
-        
-        GIFDownloader.getGIFData(named: name) { [weak self] gifData in
-            guard let data = gifData else { return }
-            self?.animator.setupForAnimation(data: data,
-                                             size: size,
-                                             loopCount: loopCount,
-                                             contentMode: contentMode,
-                                             level: level,
-                                             isResizing: isResizing,
-                                             cacheKey: cacheKey,
-                                             animationOnReady: animationOnReady)
+        do {
+            guard let data = try GIFDownloader.getDataFromAsset(named: name) else {
+                return
+            }
+            
+            self.animator.setupForAnimation(data: data,
+                                            size: size,
+                                            loopCount: loopCount,
+                                            contentMode: contentMode,
+                                            level: level,
+                                            isResizing: isResizing,
+                                            cacheKey: cacheKey,
+                                            animationOnReady: animationOnReady)
+        } catch {
+            print("")
         }
     }
     

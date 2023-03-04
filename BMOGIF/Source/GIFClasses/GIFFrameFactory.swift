@@ -40,10 +40,6 @@ internal class GIFFrameFactory {
         self.isResizing = isResizing
     }
     
-    internal func setupCachedImages() {
-        
-    }
-    
     internal func clearFactory() {
         self.animationFrames = []
         self.imageSource = nil
@@ -57,20 +53,21 @@ internal class GIFFrameFactory {
             return
         }
         
-        if isResizing {
-            let resizedFrames = resize(size: self.imageSize)
-            let convertFramesArray = getCGImagesForKeyWithCaching(key: self.cacheKey,
-                                                                  source: resizedFrames)
-            self.animationFrames = getLevelFrame(level: level, frames: convertFramesArray)
+        if isCached {
+            guard let cgImages = GIFImageCache.shared.getGIFImages(forKey: self.cacheKey) else {
+                return
+            }
             
-            animationOnReady?()
-        } else {
-            let frames = getCGImagesForKeyWithCaching(key: self.cacheKey,
-                                                      source: imageSource)
-            self.animationFrames = getLevelFrame(level: level, frames: frames)
-            
-            animationOnReady?()
+            self.animationFrames = cgImages
+            return
         }
+        
+        let frames = convertCGImageSourceToGIFFrameArray(source: imageSource)
+        let levelFrames = getLevelFrame(level: level, frames: frames)
+        self.animationFrames = levelFrames
+        
+        saveCacheImageFrames(frames: levelFrames)
+        animationOnReady?()
     }
     
     private func getLevelFrame(level: GIFFrameReduceLevel,
@@ -85,30 +82,26 @@ internal class GIFFrameFactory {
         }
     }
     
-    private func getCGImagesForKeyWithCaching(key: String,
-                                              source: CGImageSource) -> [GIFFrame] {
-        if isCached {
-            guard let cgImages = GIFImageCache.shared.getGIFImages(forKey: key) else {
-                return []
-            }
-            
-            return cgImages
-        } else {
-            return convertCGImageSourceToGIFFrameArray(source: source)
-        }
-    }
-    
     private func convertCGImageSourceToGIFFrameArray(source: CGImageSource) -> [GIFFrame] {
         let frameCount = CGImageSourceGetCount(source)
         var frameProperties: [GIFFrame] = []
         
         for i in 0..<frameCount {
             guard let image = CGImageSourceCreateImageAtIndex(source, i, nil) else {
-                continue
+                return []
             }
             
             guard let properties = CGImageSourceCopyPropertiesAtIndex(source, i, nil) as? [String: Any] else {
                 return []
+            }
+            
+            if isResizing {
+                guard let resizeImage = resize(image) else { return [] }
+                
+                frameProperties.append(
+                    GIFFrame(image: resizeImage,
+                             duration: applyMinimumDelayTime(properties))
+                )
             }
             
             frameProperties.append(
@@ -117,12 +110,12 @@ internal class GIFFrameFactory {
             )
         }
         
-        GIFImageCache.shared.addGIFImages(frameProperties,
-                                          forKey: self.cacheKey)
-        
-        isCached = true
-        
         return frameProperties
+    }
+    
+    private func saveCacheImageFrames(frames: [GIFFrame]) {
+        GIFImageCache.shared.addGIFImages(frames, forKey: self.cacheKey)
+        isCached = true
     }
     
     private func applyMinimumDelayTime(_ properties: [String: Any]) -> Double {
@@ -161,19 +154,31 @@ internal class GIFFrameFactory {
         return reducedFrameProperties
     }
     
-    private func resize(size: CGSize) -> CGImageSource {
-        guard let imageSource = self.imageSource else {
-            return UIImage().cgImage as! CGImageSource
-        }
-        
+    private func resize(_ cgImage: CGImage) -> CGImage? {
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceThumbnailMaxPixelSize: max(Int(size.width), Int(size.height))
+            kCGImageSourceThumbnailMaxPixelSize: max(Int(self.imageSize.width), Int(self.imageSize.height))
         ]
         
-        let resizedImageSource = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary)
+        guard let imageSource = CGImageSourceCreateWithDataProvider(cgImage.dataProvider!, nil)
+            else {
+            return nil
+        }
         
-        return resizedImageSource as! CGImageSource
+        guard let thumbnailImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary)
+        else {
+            return nil
+        }
+        
+        return thumbnailImage
+    }
+    
+    func convertCGImageToImageSource(from cgImage: CGImage) -> CGImageSource? {
+        guard let dataProvider = cgImage.dataProvider else {
+            return nil
+        }
+        
+        return CGImageSourceCreateWithDataProvider(dataProvider, nil)
     }
 }

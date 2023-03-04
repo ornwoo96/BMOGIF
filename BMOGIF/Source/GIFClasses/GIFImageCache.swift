@@ -21,4 +21,8 @@ internal class GIFImageCache {
         guard let item = cache.object(forKey: key as NSString) else { return nil }
         return item.images
     }
+    
+    internal func removeGIFImage(forKey key: String) {
+        cache.removeObject(forKey: key as NSString)
+    }
 }
