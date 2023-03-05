@@ -96,18 +96,18 @@ internal class GIFFrameFactory {
             }
             
             if isResizing {
-                guard let resizeImage = resize(image) else { return [] }
+                guard let resizeImage = resize(source,i,image) else { return [] }
                 
                 frameProperties.append(
                     GIFFrame(image: resizeImage,
                              duration: applyMinimumDelayTime(properties))
                 )
+            } else {
+                frameProperties.append(
+                    GIFFrame(image: image,
+                             duration: applyMinimumDelayTime(properties))
+                )
             }
-            
-            frameProperties.append(
-                GIFFrame(image: image,
-                         duration: applyMinimumDelayTime(properties))
-            )
         }
         
         return frameProperties
@@ -154,20 +154,16 @@ internal class GIFFrameFactory {
         return reducedFrameProperties
     }
     
-    private func resize(_ cgImage: CGImage) -> CGImage? {
+    private func resize(_ source: CGImageSource,
+                        _ index: Int,
+                        _ cgImage: CGImage) -> CGImage? {
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceThumbnailMaxPixelSize: max(Int(self.imageSize.width), Int(self.imageSize.height))
         ]
         
-        guard let imageSource = CGImageSourceCreateWithDataProvider(cgImage.dataProvider!, nil)
-            else {
-            return nil
-        }
-        
-        guard let thumbnailImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary)
-        else {
+        guard let thumbnailImage = CGImageSourceCreateThumbnailAtIndex(source, index, options as CFDictionary) else {
             return nil
         }
         
